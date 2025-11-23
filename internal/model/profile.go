@@ -9,3 +9,7 @@ type Profile struct {
 	Bio        string `gorm:"column:bio;type:text" json:"bio"`
 	PictureUrl string `gorm:"column:picture_url" json:"pictureUrl"`
 }
+
+func (Profile) TableName() string {
+	return "profile"
+}

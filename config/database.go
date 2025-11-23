@@ -8,6 +8,8 @@ import (
 	"gorm.io/gorm"
 
 	"github.com/joho/godotenv"
+
+	"tenet-profile/internal/model"
 )
 
 var DB *gorm.DB
@@ -35,4 +37,20 @@ func InitDataBase() (*gorm.DB, error) {
 	}
 	return db, nil
 
+}
+
+func RunMigrations(db *gorm.DB) {
+
+	if db == nil {
+		log.Fatal("Database connection is nil")
+	}
+
+	for _, model := range model.Models {
+		err := db.AutoMigrate(model)
+		if err != nil {
+			log.Fatalf("Failed to migrate model %T: %v", model, err)
+		}
+	}
+
+	log.Println("Database migrations completed successfully.")
 }
