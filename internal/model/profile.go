@@ -8,6 +8,7 @@ type Profile struct {
 	Age        int    `gorm:"column:age" json:"age"`
 	Bio        string `gorm:"column:bio;type:text" json:"bio"`
 	PictureUrl string `gorm:"column:picture_url" json:"pictureUrl"`
+	UserID     int64  `gorm:"column:user_id" json:"userId"`
 }
 
 func (Profile) TableName() string {
