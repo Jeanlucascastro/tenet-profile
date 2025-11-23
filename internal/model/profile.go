@@ -14,3 +14,25 @@ type Profile struct {
 func (Profile) TableName() string {
 	return "profile"
 }
+
+type ProfileDTO struct {
+	Name       string `json:"name"`
+	LastName   string `json:"lastName"`
+	Nickname   string `json:"nickname"`
+	Age        int    `json:"age"`
+	Bio        string `json:"bio"`
+	PictureUrl string `json:"pictureUrl"`
+	UserID     int64  `json:"userId"`
+}
+
+func (p *ProfileDTO) ToEntity() *Profile {
+	return &Profile{
+		Name:       p.Name,
+		LastName:   p.LastName,
+		Nickname:   p.Nickname,
+		Age:        p.Age,
+		Bio:        p.Bio,
+		PictureUrl: p.PictureUrl,
+		UserID:     p.UserID,
+	}
+}
