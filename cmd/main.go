@@ -51,8 +51,6 @@ func dependenciesInit(router *gin.Engine, db *gorm.DB) (*gin.Engine, error) {
 	// Handlers
 	profileHandler := handlers.NewProfileHandler(profileService)
 
-	print("ok")
-
 	// Routes
 	router.POST("/profile", profileHandler.CreateProfile)
 
