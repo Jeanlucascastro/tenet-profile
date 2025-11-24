@@ -32,10 +32,17 @@ func (r *TenetProfileRepository) GetTenetProfileByUserID(userID int64) (*model.P
 	return &profile, nil
 }
 
-func (r *TenetProfileRepository) CreateTenetProfile(profile *model.Profile) error {
-	return r.DB.Create(profile).Error
+func (r *TenetProfileRepository) CreateTenetProfile(profile *model.Profile) (*model.Profile, error) {
+	if err := r.DB.Create(profile).Error; err != nil {
+		return nil, err
+	}
+	return profile, nil
 }
 
-func (r *TenetProfileRepository) UpdateTenetProfile(profile *model.Profile) error {
-	return r.DB.Save(profile).Error
+func (r *TenetProfileRepository) UpdateTenetProfile(profile *model.Profile) (*model.Profile, error) {
+	if err := r.DB.Save(profile).Error; err != nil {
+		return nil, err
+	}
+
+	return profile, nil
 }

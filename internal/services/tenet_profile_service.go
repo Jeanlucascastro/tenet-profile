@@ -15,7 +15,7 @@ func NewTenetProfileService(repo *repository.TenetProfileRepository) *TenetProfi
 	}
 }
 
-func (s *TenetProfileService) Save(profileDTO *model.ProfileDTO) error {
+func (s *TenetProfileService) Save(profileDTO *model.ProfileDTO) (*model.Profile, error) {
 
 	profile := profileDTO.ToEntity()
 
