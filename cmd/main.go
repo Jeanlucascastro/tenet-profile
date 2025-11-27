@@ -53,6 +53,7 @@ func dependenciesInit(router *gin.Engine, db *gorm.DB) (*gin.Engine, error) {
 
 	// Routes
 	router.POST("/profile", profileHandler.CreateProfile)
+	router.GET("/profile/by-user/:userId", profileHandler.GetProfileByUserID)
 
 	return router, nil
 }

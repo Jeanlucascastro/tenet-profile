@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 	"tenet-profile/internal/model"
 	service "tenet-profile/internal/services"
 
@@ -34,4 +35,22 @@ func (h *ProfileHandler) CreateProfile(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusCreated, profile)
 
+}
+
+func (h *ProfileHandler) GetProfileByUserID(ctx *gin.Context) {
+	userIDParam := ctx.Param("userId")
+
+	userID, err := strconv.ParseInt(userIDParam, 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return
+	}
+
+	profile, err := h.service.GetAllByID(userID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, profile)
 }

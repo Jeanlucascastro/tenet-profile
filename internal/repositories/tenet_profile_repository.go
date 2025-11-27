@@ -46,3 +46,11 @@ func (r *TenetProfileRepository) UpdateTenetProfile(profile *model.Profile) (*mo
 
 	return profile, nil
 }
+
+func (r *TenetProfileRepository) FindAllByUserID(userID int64) ([]model.Profile, error) {
+	var profiles []model.Profile
+	if err := r.DB.Where("user_id = ?", userID).Find(&profiles).Error; err != nil {
+		return nil, err
+	}
+	return profiles, nil
+}
