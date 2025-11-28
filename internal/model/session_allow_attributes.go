@@ -1,9 +1,9 @@
 package model
 
 type SessionAllowAttributes struct {
-	GenericEntity
-	SessionID int64    `gorm:"column:session_id" json:"sessionId"`
-	Attribute []string `gorm:"column:attribute;type:text[]" json:"attribute"`
+	SessionID             int64    `gorm:"column:session_id" json:"sessionId"`
+	UserWithThisAttribute int64    `gorm:"column:user_with_this_attribute" json:"userWithThisAttribute"`
+	Attributes            []string `gorm:"column:attributes;type:text[]" json:"attributes"`
 }
 
 func (SessionAllowAttributes) TableName() string {

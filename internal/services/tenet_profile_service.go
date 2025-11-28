@@ -1,6 +1,7 @@
 package service
 
 import (
+	"strconv"
 	"tenet-profile/internal/model"
 	repository "tenet-profile/internal/repositories"
 )
@@ -30,4 +31,27 @@ func (s *TenetProfileService) GetAllByID(userIDParam int64) ([]model.Profile, er
 	}
 
 	return profile, nil
+}
+
+func (s *TenetProfileService) GetFiltered(sessionId int64, userIDParam int64) (map[string]interface{}, error) {
+
+	userId := strconv.FormatInt(userIDParam, 10)
+
+	profile, err := s.repo.GetTenetProfileByID(userId)
+	if err != nil {
+		return nil, err
+	}
+
+	sessionAllowAttributes, err := s.repo.FindBySessionIdAndUserWithThisAttribute(
+		sessionId,
+		userIDParam,
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	filteredProfile := profile.FilterByAttributes(sessionAllowAttributes.Attributes)
+
+	return filteredProfile, nil
+
 }

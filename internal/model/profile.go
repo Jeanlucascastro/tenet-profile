@@ -1,5 +1,7 @@
 package model
 
+import "reflect"
+
 type Profile struct {
 	GenericEntity
 	Name       string `gorm:"column:name" json:"name"`
@@ -35,4 +37,31 @@ func (p *ProfileDTO) ToEntity() *Profile {
 		PictureUrl: p.PictureUrl,
 		UserID:     p.UserID,
 	}
+}
+
+func (p *Profile) FilterByAttributes(allowed []string) map[string]interface{} {
+	result := make(map[string]interface{})
+
+	v := reflect.ValueOf(*p)
+	t := reflect.TypeOf(*p)
+
+	allowedSet := make(map[string]bool)
+	for _, a := range allowed {
+		allowedSet[a] = true
+	}
+
+	for i := 0; i < t.NumField(); i++ {
+		field := t.Field(i)
+
+		jsonTag := field.Tag.Get("json")
+		if jsonTag == "" {
+			continue
+		}
+
+		if allowedSet[jsonTag] {
+			result[jsonTag] = v.Field(i).Interface()
+		}
+	}
+
+	return result
 }

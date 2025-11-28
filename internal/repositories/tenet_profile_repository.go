@@ -54,3 +54,16 @@ func (r *TenetProfileRepository) FindAllByUserID(userID int64) ([]model.Profile,
 	}
 	return profiles, nil
 }
+
+func (r *TenetProfileRepository) FindBySessionIdAndUserWithThisAttribute(sessionID int64,
+	userWithThisAttribute int64) (*model.SessionAllowAttributes, error) {
+
+	var sessionAllowAttributes model.SessionAllowAttributes
+
+	if err := r.DB.Where("session_id = ? AND user_with_this_attribute = ?", sessionID,
+		userWithThisAttribute).First(&sessionAllowAttributes).Error; err != nil {
+		return nil, err
+	}
+
+	return &sessionAllowAttributes, nil
+}
