@@ -38,6 +38,8 @@ func main() {
 	}
 
 	router.Run(":8082")
+
+	//TODO: add middleware for authentication.
 }
 
 func dependenciesInit(router *gin.Engine, db *gorm.DB) (*gin.Engine, error) {

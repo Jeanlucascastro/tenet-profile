@@ -42,6 +42,7 @@ func (s *TenetProfileService) GetFiltered(sessionId int64, userIDParam int64) (m
 		return nil, err
 	}
 
+	//TODO: return null if fields are not allowed
 	sessionAllowAttributes, err := s.repo.FindBySessionIdAndUserWithThisAttribute(
 		sessionId,
 		userIDParam,
