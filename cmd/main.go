@@ -2,6 +2,7 @@ package main
 
 import (
 	"tenet-profile/config"
+	"tenet-profile/internal/middleware"
 	repository "tenet-profile/internal/repositories"
 	service "tenet-profile/internal/services"
 	"tenet-profile/internal/web/handlers"
@@ -50,12 +51,20 @@ func dependenciesInit(router *gin.Engine, db *gorm.DB) (*gin.Engine, error) {
 	// Services
 	profileService := service.NewTenetProfileService(profileRepo)
 
+	authService := service.NewAuthService()
+
+	AuthMiddleware := middleware.NewAuthMiddleware(authService)
+
 	// Handlers
 	profileHandler := handlers.NewProfileHandler(profileService)
 
 	// Routes
-	router.POST("/profile", profileHandler.CreateProfile)
-	router.GET("/profile/by-user/:userId", profileHandler.GetProfileByUserID)
+	protected := router.Group("/").Use(AuthMiddleware.MiddlewareFunc())
+
+	{
+		protected.POST("/profile", profileHandler.CreateProfile)
+		protected.GET("/profile/by-user/:userId", profileHandler.GetProfileByUserID)
+	}
 
 	return router, nil
 }
