@@ -1,18 +1,18 @@
 package middleware
 
 import (
-	service "tenet-profile/internal/services"
+	service "tenet-profile/internal/client"
 
 	"github.com/gin-gonic/gin"
 )
 
 type AuthMiddleware struct {
-	authService *service.AuthService
+	authClient *service.AuthClient
 }
 
-func NewAuthMiddleware(authService *service.AuthService) *AuthMiddleware {
+func NewAuthMiddleware(authClient *service.AuthClient) *AuthMiddleware {
 	return &AuthMiddleware{
-		authService: authService,
+		authClient: authClient,
 	}
 }
 
@@ -21,7 +21,7 @@ func (m *AuthMiddleware) MiddlewareFunc() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
 
-		valid, err := m.authService.ValidateToken(token)
+		valid, err := m.authClient.ValidateToken(token)
 		if err != nil || !valid {
 			c.AbortWithStatus(401)
 			return

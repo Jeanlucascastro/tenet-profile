@@ -1,6 +1,11 @@
 package client
 
-import "net/http"
+import (
+	"encoding/json"
+	"fmt"
+	"net/http"
+	"strings"
+)
 
 type AuthClient struct {
 	baseURL    string
@@ -16,5 +21,33 @@ func NewAuthClient(baseURL string) *AuthClient {
 
 func (c *AuthClient) ValidateToken(token string) (bool, error) {
 
-	return true, nil
+	if token == "" {
+		return false, fmt.Errorf("token vazio")
+	}
+
+	token = strings.TrimPrefix(token, "Bearer ")
+
+	req, err := http.NewRequest("GET", fmt.Sprintf("%s/validate", c.baseURL), nil)
+	if err != nil {
+		return false, err
+	}
+
+	req.Header.Set("token", token)
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return false, err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return false, fmt.Errorf("token inválido: status %d", resp.StatusCode)
+	}
+
+	var valid bool
+	if err := json.NewDecoder(resp.Body).Decode(&valid); err != nil {
+		return false, err
+	}
+
+	return valid, nil
 }

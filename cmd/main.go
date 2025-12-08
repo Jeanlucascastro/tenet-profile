@@ -2,6 +2,7 @@ package main
 
 import (
 	"tenet-profile/config"
+	"tenet-profile/internal/client"
 	"tenet-profile/internal/middleware"
 	repository "tenet-profile/internal/repositories"
 	service "tenet-profile/internal/services"
@@ -50,6 +51,8 @@ func dependenciesInit(router *gin.Engine, db *gorm.DB) (*gin.Engine, error) {
 	profileService := service.NewTenetProfileService(profileRepo)
 
 	authService := service.NewAuthService()
+
+	authClient := client.NewAuthClient()
 
 	AuthMiddleware := middleware.NewAuthMiddleware(authService)
 
