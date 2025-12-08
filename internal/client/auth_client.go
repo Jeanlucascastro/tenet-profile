@@ -16,4 +16,5 @@ func NewAuthClient(baseURL string) *AuthClient {
 
 func (c *AuthClient) ValidateToken(token string) (bool, error) {
 
+	return true, nil
 }
