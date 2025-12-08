@@ -50,11 +50,10 @@ func dependenciesInit(router *gin.Engine, db *gorm.DB) (*gin.Engine, error) {
 	// Services
 	profileService := service.NewTenetProfileService(profileRepo)
 
-	authService := service.NewAuthService()
+	// TODO:fix, is not working
+	authClient := client.NewAuthClient("http://localhost:8080/auth")
 
-	authClient := client.NewAuthClient()
-
-	AuthMiddleware := middleware.NewAuthMiddleware(authService)
+	AuthMiddleware := middleware.NewAuthMiddleware(authClient)
 
 	// Handlers
 	profileHandler := handlers.NewProfileHandler(profileService)
