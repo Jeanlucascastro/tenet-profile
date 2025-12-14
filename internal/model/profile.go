@@ -60,6 +60,8 @@ func (p *Profile) FilterByAttributes(allowed []string) map[string]interface{} {
 
 		if allowedSet[jsonTag] {
 			result[jsonTag] = v.Field(i).Interface()
+		} else {
+			result[jsonTag] = nil
 		}
 	}
 

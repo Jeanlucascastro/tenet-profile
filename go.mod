@@ -1,6 +1,6 @@
 module tenet-profile
 
-go 1.25.4
+go 1.25.5
 
 require gorm.io/driver/postgres v1.6.0
 
