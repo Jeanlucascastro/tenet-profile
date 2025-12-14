@@ -33,6 +33,7 @@ func (s *TenetProfileService) GetAllByID(userIDParam int64) ([]model.Profile, er
 	return profile, nil
 }
 
+// TODO: test
 func (s *TenetProfileService) GetFiltered(sessionId int64, userIDParam int64) (map[string]interface{}, error) {
 
 	userId := strconv.FormatInt(userIDParam, 10)
