@@ -46,9 +46,10 @@ func dependenciesInit(router *gin.Engine, db *gorm.DB) (*gin.Engine, error) {
 
 	// Repositories
 	profileRepo := repository.NewTenetProfileRepository(db)
+	sessionAllowAttributesRepo := repository.NewSessionAllowAttributesRepository(db)
 
 	// Services
-	profileService := service.NewTenetProfileService(profileRepo)
+	profileService := service.NewTenetProfileService(profileRepo, sessionAllowAttributesRepo)
 
 	authClient := client.NewAuthClient("http://localhost:8080/auth")
 
@@ -63,6 +64,7 @@ func dependenciesInit(router *gin.Engine, db *gorm.DB) (*gin.Engine, error) {
 	{
 		protected.POST("/profile", profileHandler.CreateProfile)
 		protected.GET("/profile/by-user/:userId", profileHandler.GetProfileByUserID)
+		protected.GET("/profile-attributes/:sessionId/userId/:userId", profileHandler.GetAttributesFiltred)
 	}
 
 	return router, nil

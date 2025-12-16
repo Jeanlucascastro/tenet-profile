@@ -2,7 +2,10 @@ module tenet-profile
 
 go 1.25.5
 
-require gorm.io/driver/postgres v1.6.0
+require (
+	github.com/lib/pq v1.10.9
+	gorm.io/driver/postgres v1.6.0
+)
 
 require (
 	github.com/bytedance/sonic v1.14.0 // indirect

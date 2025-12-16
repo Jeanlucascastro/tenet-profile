@@ -7,12 +7,15 @@ import (
 )
 
 type TenetProfileService struct {
-	repo *repository.TenetProfileRepository
+	repo                       *repository.TenetProfileRepository
+	sessionAllowAttributesRepo *repository.SessionAllowAttributesRepository
 }
 
-func NewTenetProfileService(repo *repository.TenetProfileRepository) *TenetProfileService {
+func NewTenetProfileService(repo *repository.TenetProfileRepository,
+	sessionAllowAttributesRepo *repository.SessionAllowAttributesRepository) *TenetProfileService {
 	return &TenetProfileService{
-		repo: repo,
+		repo:                       repo,
+		sessionAllowAttributesRepo: sessionAllowAttributesRepo,
 	}
 }
 
@@ -43,7 +46,7 @@ func (s *TenetProfileService) GetFiltered(sessionId int64, userIDParam int64) (m
 		return nil, err
 	}
 
-	sessionAllowAttributes, err := s.repo.FindBySessionIdAndUserWithThisAttribute(
+	sessionAllowAttributes, err := s.sessionAllowAttributesRepo.FindBySessionIdAndUserWithThisAttribute(
 		sessionId,
 		userIDParam,
 	)

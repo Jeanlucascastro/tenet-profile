@@ -54,3 +54,32 @@ func (h *ProfileHandler) GetProfileByUserID(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, profile)
 }
+
+func (h *ProfileHandler) GetAttributesFiltred(ctx *gin.Context) {
+
+	sessionId := ctx.Param("sessionId")
+	intSessionId, err := strconv.ParseInt(sessionId, 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid session ID"})
+		return
+	}
+
+	userId := ctx.Param("userId")
+
+	intUserId, err := strconv.ParseInt(userId, 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return
+	}
+
+	sessionAllowAttributes, err := h.service.GetFiltered(
+		intSessionId,
+		intUserId,
+	)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, sessionAllowAttributes)
+}
