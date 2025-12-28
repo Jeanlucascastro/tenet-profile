@@ -18,8 +18,8 @@ func (r *SessionAllowAttributesRepository) Create(sessionAllowAttributes *model.
 	return r.db.Create(sessionAllowAttributes).Error
 }
 
-func (r *SessionAllowAttributesRepository) Update(sessionAllowAttributes *model.SessionAllowAttributes) error {
-	return r.db.Save(sessionAllowAttributes).Error
+func (r *SessionAllowAttributesRepository) Update(sessionAllowAttributes *model.SessionAllowAttributes, sessionId int64) error {
+	return r.db.Model(sessionAllowAttributes).Where("session_id = ?", sessionId).Updates(sessionAllowAttributes).Error
 }
 
 func (r *SessionAllowAttributesRepository) Delete(sessionAllowAttributes *model.SessionAllowAttributes) error {

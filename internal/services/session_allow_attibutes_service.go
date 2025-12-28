@@ -18,8 +18,8 @@ func (s *TenetSessionAllowAttributesService) Save(sessionAllowAttributes *model.
 	return s.repo.Create(sessionAllowAttributes)
 }
 
-func (s *TenetSessionAllowAttributesService) Update(sessionAllowAttributes *model.SessionAllowAttributes) error {
-	return s.repo.Update(sessionAllowAttributes)
+func (s *TenetSessionAllowAttributesService) Update(sessionAllowAttributes *model.SessionAllowAttributes, sessionId int64) error {
+	return s.repo.Update(sessionAllowAttributes, sessionId)
 }
 
 func (s *TenetSessionAllowAttributesService) Delete(sessionAllowAttributes *model.SessionAllowAttributes) error {

@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 	"tenet-profile/internal/model"
 	service "tenet-profile/internal/services"
 
@@ -33,4 +34,31 @@ func (h *SessionAllowAttributesHandler) CreateSessionAllowAttributes(ctx *gin.Co
 	}
 
 	ctx.JSON(http.StatusCreated, saa)
+}
+
+func (h *SessionAllowAttributesHandler) UpdateSessionAllowAttributes(ctx *gin.Context) {
+	var saa model.SessionAllowAttributes
+
+	if err := ctx.ShouldBindJSON(&saa); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	sessionIdParam := ctx.Param("sessionId")
+
+	id, err := strconv.ParseUint(sessionIdParam, 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid session ID"})
+		return
+	}
+
+	saa.SessionID = int64(id)
+
+	updateError := h.service.Update(&saa, int64(id))
+	if updateError != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": updateError.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, saa)
 }
