@@ -37,6 +37,30 @@ func (h *ProfileHandler) CreateProfile(ctx *gin.Context) {
 
 }
 
+func (h *ProfileHandler) UpdateProfile(ctx *gin.Context) {
+	var profileDTO model.ProfileDTO
+	profileIDParam := ctx.Param("profileID")
+
+	profileID, err := strconv.ParseInt(profileIDParam, 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid profile ID"})
+		return
+	}
+
+	if err := ctx.ShouldBindJSON(&profileDTO); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	profile, err := h.service.Update(&profileDTO, profileID)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, profile)
+}
+
 func (h *ProfileHandler) GetProfileByUserID(ctx *gin.Context) {
 	userIDParam := ctx.Param("userId")
 

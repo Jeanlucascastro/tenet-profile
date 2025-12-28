@@ -36,7 +36,18 @@ func (s *TenetProfileService) GetAllByID(userIDParam int64) ([]model.Profile, er
 	return profile, nil
 }
 
-// TODO: test
+func (s *TenetProfileService) Update(profileDTO *model.ProfileDTO, profileId int64) (*model.Profile, error) {
+
+	profile := profileDTO.ToEntity()
+
+	updatedProfile, err := s.repo.UpdateTenetProfile(profile, profileId)
+	if err != nil {
+		return nil, err
+	}
+
+	return updatedProfile, nil
+}
+
 func (s *TenetProfileService) GetFiltered(sessionId int64, userIDParam int64) (map[string]interface{}, error) {
 
 	userId := strconv.FormatInt(userIDParam, 10)

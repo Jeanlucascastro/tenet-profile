@@ -39,12 +39,18 @@ func (r *TenetProfileRepository) CreateTenetProfile(profile *model.Profile) (*mo
 	return profile, nil
 }
 
-func (r *TenetProfileRepository) UpdateTenetProfile(profile *model.Profile) (*model.Profile, error) {
-	if err := r.DB.Save(profile).Error; err != nil {
+func (r *TenetProfileRepository) UpdateTenetProfile(profile *model.Profile, profileId int64) (*model.Profile, error) {
+	var existing model.Profile
+
+	if err := r.DB.First(&existing, profileId).Error; err != nil {
 		return nil, err
 	}
 
-	return profile, nil
+	if err := r.DB.Model(&existing).Updates(profile).Error; err != nil {
+		return nil, err
+	}
+
+	return &existing, nil
 }
 
 func (r *TenetProfileRepository) FindAllByUserID(userID int64) ([]model.Profile, error) {
