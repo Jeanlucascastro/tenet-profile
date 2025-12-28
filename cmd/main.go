@@ -73,6 +73,7 @@ func dependenciesInit(router *gin.Engine, db *gorm.DB) (*gin.Engine, error) {
 
 		// SessionAllowAttributes
 		protected.POST("/session-allow-attributes", sessionAllowAttibuteHandler.CreateSessionAllowAttributes)
+		// TODO: Implement update Attributes
 
 	}
 
