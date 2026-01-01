@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 	"tenet-profile/internal/model"
@@ -20,6 +21,8 @@ func NewProfileHandler(service *service.TenetProfileService) *ProfileHandler {
 }
 
 func (h *ProfileHandler) CreateProfile(ctx *gin.Context) {
+	log.Println("CreateProfile")
+
 	var profileDTO model.ProfileDTO
 
 	if err := ctx.ShouldBindJSON(&profileDTO); err != nil {

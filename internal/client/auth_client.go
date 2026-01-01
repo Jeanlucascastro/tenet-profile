@@ -3,6 +3,7 @@ package client
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 )
@@ -20,6 +21,7 @@ func NewAuthClient(baseURL string) *AuthClient {
 }
 
 func (c *AuthClient) ValidateToken(token string) (bool, error) {
+	log.Println("ValidateToken")
 
 	if token == "" {
 		return false, fmt.Errorf("token vazio")
@@ -27,7 +29,11 @@ func (c *AuthClient) ValidateToken(token string) (bool, error) {
 
 	token = strings.TrimPrefix(token, "Bearer ")
 
+	print("sending request")
 	req, err := http.NewRequest("GET", fmt.Sprintf("%s/validate", c.baseURL), nil)
+	print("Request ")
+	print(req)
+	print(err)
 	if err != nil {
 		return false, err
 	}

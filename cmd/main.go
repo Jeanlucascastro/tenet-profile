@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"tenet-profile/config"
 	"tenet-profile/internal/client"
 	"tenet-profile/internal/middleware"
@@ -15,6 +16,7 @@ import (
 )
 
 func main() {
+	log.Println("----------------------------- 8")
 
 	db, err := config.InitDataBase()
 	if err != nil {
@@ -43,6 +45,7 @@ func main() {
 }
 
 func dependenciesInit(router *gin.Engine, db *gorm.DB) (*gin.Engine, error) {
+	log.Println("dependenciesInit")
 
 	// Repositories
 	profileRepo := repository.NewTenetProfileRepository(db)
@@ -53,7 +56,7 @@ func dependenciesInit(router *gin.Engine, db *gorm.DB) (*gin.Engine, error) {
 
 	sessionAllowAttibuteService := service.NewSessionAllowAttributesService(sessionAllowAttributesRepo)
 
-	authClient := client.NewAuthClient("http://host.docker.internal:8080/auth")
+	authClient := client.NewAuthClient("http://tenet-main:8080/auth")
 
 	AuthMiddleware := middleware.NewAuthMiddleware(authClient)
 

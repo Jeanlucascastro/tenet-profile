@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"log"
 	service "tenet-profile/internal/client"
 
 	"github.com/gin-gonic/gin"
@@ -17,6 +18,7 @@ func NewAuthMiddleware(authClient *service.AuthClient) *AuthMiddleware {
 }
 
 func (m *AuthMiddleware) MiddlewareFunc() gin.HandlerFunc {
+	log.Println("AuthMiddleware MiddlewareFunc")
 
 	return func(c *gin.Context) {
 		token := c.GetHeader("Authorization")
