@@ -16,7 +16,6 @@ import (
 )
 
 func main() {
-	log.Println("----------------------------- 8")
 
 	db, err := config.InitDataBase()
 	if err != nil {
