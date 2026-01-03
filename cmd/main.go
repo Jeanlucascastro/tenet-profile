@@ -76,7 +76,6 @@ func dependenciesInit(router *gin.Engine, db *gorm.DB) (*gin.Engine, error) {
 
 		// SessionAllowAttributes
 		protected.POST("/session-allow-attributes", sessionAllowAttibuteHandler.CreateSessionAllowAttributes)
-		// TODO: add get by sessionId and userId
 		protected.PUT("/session-allow-attributes/:sessionId/userId/:userId", sessionAllowAttibuteHandler.UpdateSessionAllowAttributes)
 		protected.GET("/session-allow-attributes/:sessionId/userId/:userId", sessionAllowAttibuteHandler.GetSessionAllowAttributesBySessionIdAndUserId)
 
