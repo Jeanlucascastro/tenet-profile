@@ -1,7 +1,6 @@
 package service
 
 import (
-	"strconv"
 	"tenet-profile/internal/model"
 	repository "tenet-profile/internal/repositories"
 )
@@ -50,9 +49,7 @@ func (s *TenetProfileService) Update(profileDTO *model.ProfileDTO, profileId int
 
 func (s *TenetProfileService) GetFiltered(sessionId int64, userIDParam int64) (map[string]interface{}, error) {
 
-	userId := strconv.FormatInt(userIDParam, 10)
-
-	profile, err := s.repo.GetTenetProfileByID(userId)
+	profile, err := s.repo.GetTenetProfileByUserID(userIDParam)
 	if err != nil {
 		return nil, err
 	}
