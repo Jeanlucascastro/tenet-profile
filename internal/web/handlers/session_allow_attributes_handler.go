@@ -62,3 +62,21 @@ func (h *SessionAllowAttributesHandler) UpdateSessionAllowAttributes(ctx *gin.Co
 
 	ctx.JSON(http.StatusOK, saa)
 }
+
+func (h *SessionAllowAttributesHandler) findSessionAllowAttributesByID(ctx *gin.Context) {
+	idParam := ctx.Param("id")
+
+	id, err := strconv.Atoi(idParam)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid ID"})
+		return
+	}
+
+	saa, getError := h.service.GetByID(id)
+	if getError != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": getError.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, saa)
+}
