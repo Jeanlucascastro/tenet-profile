@@ -55,8 +55,8 @@ func dependenciesInit(router *gin.Engine, db *gorm.DB) (*gin.Engine, error) {
 
 	sessionAllowAttibuteService := service.NewSessionAllowAttributesService(sessionAllowAttributesRepo)
 
-	// authClient := client.NewAuthClient("http://tenet-main:8080/auth")
-	authClient := client.NewAuthClient("http://localhost:8080/auth")
+	authClient := client.NewAuthClient("http://tenet-main:8080/auth")
+	// authClient := client.NewAuthClient("http://localhost:8080/auth")
 
 	AuthMiddleware := middleware.NewAuthMiddleware(authClient)
 

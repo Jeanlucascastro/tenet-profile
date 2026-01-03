@@ -25,8 +25,9 @@ func InitDataBase() (*gorm.DB, error) {
 	dbPort := os.Getenv("DB_PORT")
 	dbHost := os.Getenv("DB_HOST")
 	if dbPort == "" {
-		dbPort = "5433"
+		dbPort = "5432"
 	}
+
 	dbSslMode := os.Getenv("DB_SSLMODE")
 
 	connStr := "host=" + dbHost + " user=" + dbUser + " password=" + dbPassword + " dbname=" + dbName + " port=" + dbPort + " sslmode=" + dbSslMode
