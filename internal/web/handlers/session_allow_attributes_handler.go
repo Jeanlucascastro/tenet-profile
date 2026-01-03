@@ -80,3 +80,29 @@ func (h *SessionAllowAttributesHandler) findSessionAllowAttributesByID(ctx *gin.
 
 	ctx.JSON(http.StatusOK, saa)
 }
+
+func (h *SessionAllowAttributesHandler) GetSessionAllowAttributesBySessionIdAndUserId(ctx *gin.Context) {
+
+	sessionIdParam := ctx.Param("sessionId")
+	userIdParam := ctx.Param("userId")
+
+	sessionID, err := strconv.ParseUint(sessionIdParam, 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid session ID"})
+		return
+	}
+
+	userID, err := strconv.ParseUint(userIdParam, 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"error": "Invalid user ID"})
+		return
+	}
+
+	saa, getError := h.service.FindBySessionIdAndUserWithThisAttribute(int64(sessionID), int64(userID))
+	if getError != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"error": getError.Error()})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, saa)
+}

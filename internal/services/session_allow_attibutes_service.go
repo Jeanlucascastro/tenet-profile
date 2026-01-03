@@ -33,3 +33,8 @@ func (s *TenetSessionAllowAttributesService) GetByID(id int) (*model.SessionAllo
 func (s *TenetSessionAllowAttributesService) GetAll() ([]*model.SessionAllowAttributes, error) {
 	return s.repo.GetAll()
 }
+
+func (s *TenetSessionAllowAttributesService) FindBySessionIdAndUserWithThisAttribute(sessionID int64,
+	userWithThisAttribute int64) (*model.SessionAllowAttributes, error) {
+	return s.repo.FindBySessionIdAndUserWithThisAttribute(sessionID, userWithThisAttribute)
+}
