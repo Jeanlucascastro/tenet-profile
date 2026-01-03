@@ -19,7 +19,8 @@ func (r *SessionAllowAttributesRepository) Create(sessionAllowAttributes *model.
 }
 
 func (r *SessionAllowAttributesRepository) Update(sessionAllowAttributes *model.SessionAllowAttributes, sessionId int64) error {
-	return r.db.Model(sessionAllowAttributes).Where("session_id = ?", sessionId).Updates(sessionAllowAttributes).Error
+	return r.db.Model(sessionAllowAttributes).Where("session_id = ? AND user_id = ?",
+		sessionId, sessionAllowAttributes.UserWithThisAttribute).Updates(sessionAllowAttributes).Error
 }
 
 func (r *SessionAllowAttributesRepository) Delete(sessionAllowAttributes *model.SessionAllowAttributes) error {
