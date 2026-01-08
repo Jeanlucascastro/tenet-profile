@@ -1,9 +1,20 @@
 package service
 
 import (
+	"errors"
+	"fmt"
+	"mime/multipart"
+	"os"
+	"path/filepath"
 	"tenet-profile/internal/model"
 	repository "tenet-profile/internal/repositories"
+
+	"github.com/google/uuid"
 )
+
+type profileImageService interface {
+	UpdatePicture(profileID uint64, file *multipart.FileHeader) (string, error)
+}
 
 type TenetProfileService struct {
 	repo                       *repository.TenetProfileRepository
@@ -65,5 +76,59 @@ func (s *TenetProfileService) GetFiltered(sessionId int64, userIDParam int64) (m
 	filteredProfile := profile.FilterByAttributes(sessionAllowAttributes.Attributes)
 
 	return filteredProfile, nil
+
+}
+
+func (s *TenetProfileService) UpdatePicture(profileID uint64, file *multipart.FileHeader) (string, error) {
+
+	if file.Size > 5<<20 {
+		return "", errors.New("Image is too large")
+	}
+
+	ext := filepath.Ext(file.Filename)
+	if ext != ".png" && ext != ".jpg" && ext != ".jpeg" && ext != ".JPEG" {
+		return "", errors.New("format invalid")
+	}
+
+	dir := "./uploads/profiles"
+	if err := os.MkdirAll(dir, os.ModePerm); err != nil {
+		return "", err
+	}
+
+	filename := fmt.Sprintf("%s%s", uuid.NewString(), ext)
+	path := filepath.Join(dir, filename)
+
+	if err := saveFile(file, path); err != nil {
+		return "", err
+	}
+
+	url := fmt.Sprintf("/static/profile/%s", filename)
+
+	if err := s.repo.UpdatePicture(profileID, url); err != nil {
+		return "", err
+	}
+
+	return url, nil
+
+}
+
+func saveFile(file *multipart.FileHeader, path string) error {
+
+	src, err := file.Open()
+	if err != nil {
+		return err
+	}
+
+	defer src.Close()
+
+	dst, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+
+	defer dst.Close()
+
+	_, err = dst.ReadFrom(src)
+	return err
 
 }

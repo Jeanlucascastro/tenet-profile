@@ -73,6 +73,7 @@ func dependenciesInit(router *gin.Engine, db *gorm.DB) (*gin.Engine, error) {
 		protected.GET("/profile/by-user/:userId", profileHandler.GetProfileByUserID)
 		protected.GET("/profile-attributes/:sessionId/userId/:userId", profileHandler.GetAttributesFiltred)
 		protected.PUT("/profile/:profileID", profileHandler.UpdateProfile)
+		protected.POST("profile/:id/picture", profileHandler.UploadImage)
 
 		// SessionAllowAttributes
 		protected.POST("/session-allow-attributes", sessionAllowAttibuteHandler.CreateSessionAllowAttributes)

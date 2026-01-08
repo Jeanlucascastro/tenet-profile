@@ -73,3 +73,9 @@ func (r *TenetProfileRepository) FindBySessionIdAndUserWithThisAttribute(session
 
 	return &sessionAllowAttributes, nil
 }
+
+func (r *TenetProfileRepository) UpdatePicture(profileID uint64, pictureUrl string) error {
+	return r.DB.Model(&model.Profile{}).
+		Where("id = ?", profileID).
+		Update("picture_url", pictureUrl).Error
+}

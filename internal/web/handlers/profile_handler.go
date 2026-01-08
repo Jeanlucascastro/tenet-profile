@@ -110,3 +110,29 @@ func (h *ProfileHandler) GetAttributesFiltred(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, sessionAllowAttributes)
 }
+
+func (h *ProfileHandler) UploadImage(c *gin.Context) {
+	profileIDParam := c.Param("id")
+
+	profileID, err := strconv.ParseUint(profileIDParam, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid Profile"})
+		return
+	}
+
+	file, err := c.FormFile("image")
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "No image"})
+		return
+	}
+
+	url, err := h.service.UpdatePicture(profileID, file)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"pictureUrl": url,
+	})
+}
