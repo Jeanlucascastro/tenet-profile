@@ -23,6 +23,9 @@ WORKDIR /app
 # certificados (https / postgres)
 RUN apk add --no-cache ca-certificates
 
+# cria diretório de uploads
+RUN mkdir -p /app/uploads/profiles
+
 # copia binário
 COPY --from=builder /app/app .
 
