@@ -64,6 +64,8 @@ func dependenciesInit(router *gin.Engine, db *gorm.DB) (*gin.Engine, error) {
 	profileHandler := handlers.NewProfileHandler(profileService)
 	sessionAllowAttibuteHandler := handlers.NewSessionAllowAttributesHandler(sessionAllowAttibuteService)
 
+	router.Static("/static", "uploads")
+
 	// Routes
 	protected := router.Group("/").Use(AuthMiddleware.MiddlewareFunc())
 

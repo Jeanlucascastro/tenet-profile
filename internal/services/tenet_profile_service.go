@@ -6,6 +6,7 @@ import (
 	"mime/multipart"
 	"os"
 	"path/filepath"
+	"strings"
 	"tenet-profile/internal/model"
 	repository "tenet-profile/internal/repositories"
 
@@ -85,7 +86,7 @@ func (s *TenetProfileService) UpdatePicture(profileID uint64, file *multipart.Fi
 		return "", errors.New("Image is too large")
 	}
 
-	ext := filepath.Ext(file.Filename)
+	ext := strings.ToLower(filepath.Ext(file.Filename))
 	if ext != ".png" && ext != ".jpg" && ext != ".jpeg" && ext != ".JPEG" {
 		return "", errors.New("format invalid")
 	}
@@ -102,7 +103,7 @@ func (s *TenetProfileService) UpdatePicture(profileID uint64, file *multipart.Fi
 		return "", err
 	}
 
-	url := fmt.Sprintf("/static/profile/%s", filename)
+	url := fmt.Sprintf("/static/profiles/%s", filename)
 
 	if err := s.repo.UpdatePicture(profileID, url); err != nil {
 		return "", err
